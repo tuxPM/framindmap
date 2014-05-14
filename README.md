@@ -1,3 +1,12 @@
+
+Ce fork inclut la possibilité de sauvegarder sur le serveur qui héberge Framindmap.
+Le chemin vers le fichier php doit être spécifié dans  Storage.js (var path="/framindmap/storage.php";)
+Les fichiers sont ensuite stockés dans le répertoire storage (variable $storageFolder dans storage.php).
+
+Le fichier peut être chargé directement ou partagé en fournissant le clé du document (sans le préfix) comme paramètre d'URL : id.
+Exemple: /framindmap.html?id=118a5fff-9a13-438f-9504-c4e14cdff9be.
+
+
 Framindmap
 ==========
 
@@ -14,5 +23,4 @@ L'installation se fait par simple copier/coller des fichiers sur un serveur web 
 
 Ce logiciel est proposé comme service en ligne par l'association Framasoft depuis 2012 sur le site :
 http://framindmap.org/
-
 
