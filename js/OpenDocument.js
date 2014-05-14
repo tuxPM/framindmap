@@ -38,14 +38,33 @@ mindmaps.OpenDocumentView = function() {
     }
   });
 
+  var $rtable = $dialog.find(".remotestorage-filelist");
+  $rtable.delegate("a.title", "click", function() {
+    if (self.documentClicked) {
+      var t = $(this).tmplItem();
+      self.documentClicked(t.data);
+    }
+  }).delegate("a.delete", "click", function() {
+    if (self.deleteDocumentClicked) {
+      var t = $(this).tmplItem();
+      self.deleteDocumentClicked(t.data,true);
+    }
+  });
+
+  
   /**
    * Render list of documents in the local storage
    * 
    * @param {mindmaps.Document[]} docs
    */
-  this.render = function(docs) {
+  this.render = function(docs, rdocs) {
+	this._render(docs,".document-list");
+	this._render(rdocs,".server-document-list");
+  }
+  
+  this._render = function(docs, containerId) {
     // empty list and insert list of documents
-    var $list = $(".document-list", $dialog).empty();
+    var $list = $(containerId, $dialog).empty();
 
     $("#template-open-table-item").tmpl(docs, {
       format : function(date) {
@@ -58,14 +77,14 @@ mindmaps.OpenDocumentView = function() {
       }
     }).appendTo($list);
   };
-
+  
   /**
    * Shows the dialog.
    * 
    * @param {mindmaps.Document[]} docs
    */
-  this.showOpenDialog = function(docs) {
-    this.render(docs);
+  this.showOpenDialog = function(docs, rdocs) {
+    this.render(docs, rdocs);
     $dialog.dialog("open");
   };
 
@@ -129,13 +148,17 @@ mindmaps.OpenDocumentPresenter = function(eventBus, mindmapModel, view) {
    * @ignore
    * @param {mindmaps.Document} doc
    */
-  view.deleteDocumentClicked = function(doc) {
+  view.deleteDocumentClicked = function(doc, remote) {
     // TODO event
-    mindmaps.LocalDocumentStorage.deleteDocument(doc);
+	if (remote===true)
+		mindmaps.RemoteDocumentStorage.deleteDocument(doc);
+    else
+		mindmaps.LocalDocumentStorage.deleteDocument(doc);
 
-    // re-render view
+    var rDocs = mindmaps.RemoteDocumentStorage.getDocuments();
+   // re-render view
     var docs = mindmaps.LocalDocumentStorage.getDocuments();
-    view.render(docs);
+    view.render(docs,rDocs);
   };
 
   /**
@@ -144,6 +167,8 @@ mindmaps.OpenDocumentPresenter = function(eventBus, mindmapModel, view) {
   this.go = function() {
     var docs = mindmaps.LocalDocumentStorage.getDocuments();
     docs.sort(mindmaps.Document.sortByModifiedDateDescending);
-    view.showOpenDialog(docs);
+    var rDocs = mindmaps.RemoteDocumentStorage.getDocuments();
+    rDocs.sort(mindmaps.Document.sortByModifiedDateDescending);
+    view.showOpenDialog(docs, rDocs);
   };
 };

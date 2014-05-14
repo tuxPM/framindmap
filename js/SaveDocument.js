@@ -25,7 +25,13 @@ mindmaps.SaveDocumentView = function() {
           self.localStorageButtonClicked();
         }
       });
-
+	  
+  var $serverSorageButton = $("#button-save-server").button().click(
+      function() {
+        if (self.remoteStorageButtonClicked) {
+          self.remoteStorageButtonClicked();
+        }
+      });
   var $autoSaveCheckbox = $("#checkbox-autosave-localstorage").click(
       function() {
         if (self.autoSaveCheckboxClicked) {
@@ -98,6 +104,20 @@ mindmaps.SaveDocumentPresenter = function(eventBus, mindmapModel, view, autosave
     }
   };
 
+  /**
+   * View callback when remote storage button was clicked. Saves the document
+   * in the remote storage.
+   * 
+   * @ignore
+   */
+  view.remoteStorageButtonClicked = function() {
+    var success = mindmapModel.saveToRemoteStorage();
+    if (success) {
+      view.hideSaveDialog();
+    } else {
+      // TODO display error hint
+    }
+  };
 
   /**
    * View callback: Enables or disables the autosave function for localstorage.
@@ -141,6 +161,12 @@ mindmaps.SaveDocumentPresenter = function(eventBus, mindmapModel, view, autosave
    * @ignore
    */
   view.saveToHddComplete = function() {
+    var doc = mindmapModel.getDocument();
+    eventBus.publish(mindmaps.Event.DOCUMENT_SAVED, doc);
+    view.hideSaveDialog();
+  };
+
+  view.saveToServerComplete = function() {
     var doc = mindmapModel.getDocument();
     eventBus.publish(mindmaps.Event.DOCUMENT_SAVED, doc);
     view.hideSaveDialog();

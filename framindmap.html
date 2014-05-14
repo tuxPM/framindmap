@@ -47,7 +47,7 @@
 <div id="open-dialog" class="file-dialog" title="Ouvrir une carte mentale">
   <h1>Stockage local</h1>
   <p>Liste des cartes mentales enregistr&eacute;es dans le stockage local de votre navigateur. Cliquez sur le titre d'une carte pour l'ouvrir.</p>
-  <table class="localstorage-filelist">
+  <table class="localstorage-filelist storage-filelist">
     <thead>
       <tr>
         <th class="title">Titre</th>
@@ -63,6 +63,19 @@
   <div class="file-chooser">
     <input type="file" />
   </div>
+  <div class="seperator"></div>
+  <h1>Serveur local</h1>
+  <p>Liste des cartes mentales enregistr&eacute;es dans le serveur local. Cliquez sur le titre d'une carte pour l'ouvrir.</p>
+  <table class="remotestorage-filelist storage-filelist">
+    <thead>
+      <tr>
+        <th class="title">Titre</th>
+        <th class="modified">Derni&egrave;re modification</th>
+        <th class="delete"></th>
+      </tr>
+    </thead>
+    <tbody class="server-document-list"></tbody>
+  </table>
 </div>
 </script>
 
@@ -77,6 +90,9 @@
   <h1>Dans un fichier</h1>
   <p>Enregistrer la carte dans un fichier sur l'ordinateur.</p>
   <div id="button-save-hdd">Enregistrer</div>
+  <h1>Serveur</h1>
+  <p>Sur le serveur local</p>
+  <div id="button-save-server">Enregistrer</div>
 </div>
 </script>
 

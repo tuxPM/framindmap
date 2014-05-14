@@ -104,6 +104,10 @@ mindmaps.ApplicationController = function() {
     });
   };
 
+  this.open= function(docId) {
+	doc=mindmaps.RemoteDocumentStorage.loadDocument(docId);
+	mindmapModel.setDocument(doc);
+  }
   /**
    * Launches the main view controller.
    */

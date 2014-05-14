@@ -232,6 +232,18 @@ mindmaps.MindMapModel = function(eventBus, commandRegistry, undoController) {
 
     return success;
   }
+  this.saveToRemoteStorage = function() {
+    var doc = this.document;
+    doc.dates.modified = new Date();
+    doc.title = this.getMindMap().getRoot().getCaption();
+    var success = mindmaps.RemoteDocumentStorage.saveDocument(doc);
+    if (success) {
+      eventBus.publish(mindmaps.Event.DOCUMENT_SAVED, doc);
+    }
 
+    return success;
+  }
+
+  
   this.init();
 };

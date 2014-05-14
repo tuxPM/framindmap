@@ -46,9 +46,15 @@ $(function() {
     addUnloadHook();
   }
 
+  
   // create a new app controller and go
   var appController = new mindmaps.ApplicationController();
   appController.go();
+
+  var params=mindmaps.Util.getUrlParams();
+  if (params.id) {
+	appController.open(params.id);
+  }
 });
 
 /**
